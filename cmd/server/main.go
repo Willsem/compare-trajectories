@@ -6,7 +6,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"server-compare/app/server"
+	"github.com/Willsem/compare-trajectories/app/server"
 )
 
 var (
