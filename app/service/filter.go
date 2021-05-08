@@ -8,7 +8,11 @@ import (
 	"gonum.org/v1/gonum/mat"
 )
 
-func KalmanFilter(x []float64, y []float64) ([]float64, []float64, error) {
+func KalmanFilter(x []float64, y []float64) (filteredX []float64, filteredY []float64, err error) {
+	defer func() {
+		err = recover().(error)
+	}()
+
 	if len(x) != len(y) {
 		return nil, nil, errors.New("cannot filter arrays with different lens")
 	}
@@ -41,9 +45,7 @@ func KalmanFilter(x []float64, y []float64) ([]float64, []float64, error) {
 	}
 
 	// G
-	G := mat.NewDense(4, 2, []float64{
-		0, 0,
-		0, 0,
+	G := mat.NewDense(2, 2, []float64{
 		1, 0,
 		0, 1,
 	})
@@ -73,9 +75,6 @@ func KalmanFilter(x []float64, y []float64) ([]float64, []float64, error) {
 
 	// no control
 	control := mat.NewVecDense(2, nil)
-
-	var filteredX []float64 = nil
-	var filteredY []float64 = nil
 
 	for i := 0; i < len(x); i++ {
 		measurement := mat.NewVecDense(2, []float64{x[i], y[i]})
