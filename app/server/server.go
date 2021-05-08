@@ -62,8 +62,13 @@ func (s *Server) handleFilter() http.HandlerFunc {
 			return
 		}
 
-		req.Lat = service.FilterArray(req.Lat)
-		req.Long = service.FilterArray(req.Long)
+		var err error
+		req.Lat, req.Long, err = service.KalmanFilter(req.Lat, req.Long)
+		if err != nil {
+			s.logger.Error("(/filter) filter error")
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
 
 		s.logger.Info("(/filter) success data filter")
 		s.respond(w, r, http.StatusOK, req)
