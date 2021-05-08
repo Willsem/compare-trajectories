@@ -10,7 +10,10 @@ import (
 
 func KalmanFilter(x []float64, y []float64) (filteredX []float64, filteredY []float64, err error) {
 	defer func() {
-		err = recover().(error)
+		rec := recover()
+		if rec != nil {
+			err = rec.(error)
+		}
 	}()
 
 	if len(x) != len(y) {
@@ -36,12 +39,12 @@ func KalmanFilter(x []float64, y []float64) (filteredX []float64, filteredY []fl
 		// no external influence
 		Bd: mat.NewDense(2, 2, nil),
 		// scaling matrix for measurement
-		C: mat.NewDense(2, 4, []float64{
-			0, 0, 1, 0,
-			0, 0, 0, 1,
+		C: mat.NewDense(2, 2, []float64{
+			1, 0,
+			0, 1,
 		}),
 		// scaling matrix for control
-		D: mat.NewDense(2, 4, nil),
+		D: mat.NewDense(2, 2, nil),
 	}
 
 	// G
