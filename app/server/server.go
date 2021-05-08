@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/Willsem/compare-trajectories/app/model"
+	"github.com/Willsem/compare-trajectories/app/service"
 )
 
 type Server struct {
@@ -52,18 +53,20 @@ func (s *Server) configureRouter() {
 }
 
 func (s *Server) handleFilter() http.HandlerFunc {
-	type request struct {
-		Acceletometer model.Acceletometer
-		Gps           model.Gps
-	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
-		req := &request{}
+		req := &model.Gps{}
 
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
 			s.logger.Error("(/filter) incorrect body")
 			s.error(w, r, http.StatusBadRequest, err)
+			return
 		}
+
+		req.Lat = service.FilterArray(req.Lat)
+		req.Long = service.FilterArray(req.Long)
+
+		s.logger.Info("(/filter) success data filter")
+		s.respond(w, r, http.StatusOK, req)
 	}
 }
 
