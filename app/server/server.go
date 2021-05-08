@@ -1,11 +1,13 @@
 package server
 
 import (
-	"io"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+
+	"github.com/Willsem/compare-trajectories/app/model"
 )
 
 type Server struct {
@@ -46,11 +48,32 @@ func (s *Server) configureLogger() error {
 }
 
 func (s *Server) configureRouter() {
-	s.router.HandleFunc("/", s.handleHello())
+	s.router.HandleFunc("/filter", s.handleFilter()).Methods("POST")
 }
 
-func (s *Server) handleHello() http.HandlerFunc {
+func (s *Server) handleFilter() http.HandlerFunc {
+	type request struct {
+		Acceletometer model.Acceletometer
+		Gps           model.Gps
+	}
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Hello World")
+		req := &request{}
+
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			s.logger.Error("(/filter) incorrect body")
+			s.error(w, r, http.StatusBadRequest, err)
+		}
+	}
+}
+
+func (s *Server) error(w http.ResponseWriter, r *http.Request, code int, err error) {
+	s.respond(w, r, code, map[string]string{"error": err.Error()})
+}
+
+func (s *Server) respond(w http.ResponseWriter, r *http.Request, code int, data interface{}) {
+	w.WriteHeader(code)
+	if data != nil {
+		json.NewEncoder(w).Encode(data)
 	}
 }
