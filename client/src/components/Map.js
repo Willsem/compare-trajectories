@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import '../styles/Map.css';
 
 class Map extends Component {
   constructor(props) {

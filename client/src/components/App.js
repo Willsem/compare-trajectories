@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import Map from './components/Map/Map';
-import './App.css';
+import Map from './Map';
+import '../styles/App.css';
 
 class App extends Component {
   constructor(props) {
