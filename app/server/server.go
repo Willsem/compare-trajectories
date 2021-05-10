@@ -50,6 +50,7 @@ func (s *Server) configureLogger() error {
 
 func (s *Server) configureRouter() {
 	s.router.HandleFunc("/filter", s.handleFilter()).Methods("POST")
+	s.router.HandleFunc("/compare", s.handleCompare()).Methods("POST")
 }
 
 func (s *Server) handleFilter() http.HandlerFunc {
@@ -72,6 +73,28 @@ func (s *Server) handleFilter() http.HandlerFunc {
 
 		s.logger.Info("(/filter) success data filter")
 		s.respond(w, r, http.StatusOK, req)
+	}
+}
+
+func (s *Server) handleCompare() http.HandlerFunc {
+	type trajectory struct {
+		Gps           model.Gps           `json:"gps"`
+		Accelerometer model.Acceletometer `json:"acc"`
+	}
+
+	type request struct {
+		Perfect  trajectory `json:"perfect"`
+		Compared trajectory `json:"compared"`
+	}
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		req := &request{}
+
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			s.logger.Error("(/compare) incorrect body")
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
 	}
 }
 
