@@ -9,16 +9,17 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/Willsem/compare-trajectories/app/model"
+	"github.com/Willsem/compare-trajectories/app/server/config"
 	"github.com/Willsem/compare-trajectories/app/service"
 )
 
 type Server struct {
-	config *Config
+	config *config.Config
 	logger *logrus.Logger
 	router *mux.Router
 }
 
-func New(config *Config) *Server {
+func New(config *config.Config) *Server {
 	return &Server{
 		config: config,
 		logger: logrus.New(),
@@ -78,14 +79,9 @@ func (s *Server) handleFilter() http.HandlerFunc {
 }
 
 func (s *Server) handleCompare() http.HandlerFunc {
-	type trajectory struct {
-		Gps           model.Gps           `json:"gps"`
-		Accelerometer model.Acceletometer `json:"acc"`
-	}
-
 	type request struct {
-		Perfect  trajectory `json:"perfect"`
-		Compared trajectory `json:"compared"`
+		Perfect  model.Trajectory `json:"perfect"`
+		Compared model.Trajectory `json:"compared"`
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {

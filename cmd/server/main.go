@@ -7,6 +7,7 @@ import (
 	"github.com/BurntSushi/toml"
 
 	"github.com/Willsem/compare-trajectories/app/server"
+	"github.com/Willsem/compare-trajectories/app/server/config"
 )
 
 var (
@@ -20,7 +21,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	config := server.NewConfig()
+	config := config.New()
 	_, err := toml.DecodeFile(configPath, config)
 	if err != nil {
 		log.Fatal(err)
