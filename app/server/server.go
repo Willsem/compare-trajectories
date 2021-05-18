@@ -10,7 +10,7 @@ import (
 
 	"github.com/Willsem/compare-trajectories/app/model"
 	"github.com/Willsem/compare-trajectories/app/server/config"
-	"github.com/Willsem/compare-trajectories/app/service"
+	"github.com/Willsem/compare-trajectories/app/service/filtering"
 )
 
 type Server struct {
@@ -66,7 +66,7 @@ func (s *Server) handleFilter() http.HandlerFunc {
 		}
 
 		var err error
-		req.Lat, req.Long, err = service.KalmanFilter(req.Lat, req.Long)
+		req.Lat, req.Long, err = filtering.KalmanFilter(req.Lat, req.Long)
 		if err != nil {
 			s.logger.Error("(/filter) filter error")
 			s.error(w, r, http.StatusBadRequest, err)

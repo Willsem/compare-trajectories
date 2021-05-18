@@ -1,5 +1,5 @@
-// Package service ...
-package service
+// Package filtering ...
+package filtering
 
 import (
 	"errors"
