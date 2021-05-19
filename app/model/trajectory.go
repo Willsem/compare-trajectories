@@ -3,5 +3,5 @@ package model
 
 type Trajectory struct {
 	Gps           Gps           `json:"gps"`
-	Accelerometer Acceletometer `json:"acc"`
+	Accelerometer Accelerometer `json:"acc"`
 }
