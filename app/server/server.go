@@ -10,6 +10,7 @@ import (
 
 	"github.com/Willsem/compare-trajectories/app/model"
 	"github.com/Willsem/compare-trajectories/app/server/config"
+	"github.com/Willsem/compare-trajectories/app/service/comparing"
 	"github.com/Willsem/compare-trajectories/app/service/filtering"
 )
 
@@ -34,7 +35,7 @@ func (s *Server) Start() error {
 
 	s.configureRouter()
 
-	s.logger.Info("starting server")
+	s.logger.Info("starting server at", s.config.BindAddr)
 
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
@@ -92,6 +93,16 @@ func (s *Server) handleCompare() http.HandlerFunc {
 			s.error(w, r, http.StatusBadRequest, err)
 			return
 		}
+
+		comparedTrajectory, err := comparing.Compare(req.Perfect, req.Compared)
+		if err != nil {
+			s.logger.Error("(/compare) error with comparing")
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		s.logger.Info("(/compare) success comparing")
+		s.respond(w, r, http.StatusOK, comparedTrajectory)
 	}
 }
 
