@@ -7,7 +7,7 @@ import (
 	"github.com/Willsem/compare-trajectories/app/service/comparing/speed"
 )
 
-func Compare(perfect model.Trajectory, compared model.Trajectory) (ct model.ComparedTrajectory, err error) {
+func Compare(perfect model.Trajectory, compared model.Trajectory) (cts []model.ComparedTrajectory, err error) {
 	err = perfect.Check()
 	if err != nil {
 		return
@@ -22,6 +22,6 @@ func Compare(perfect model.Trajectory, compared model.Trajectory) (ct model.Comp
 	comparedSpeed := speed.Create(compared.Gps)
 
 	perfectInterpolate := interpolation.CreateTrajectory(&perfectSpeed, &perfect.Accelerometer)
-	ct, err = difference(perfectInterpolate, comparedSpeed)
+	ct, err := difference(perfectInterpolate, comparedSpeed)
 	return
 }

@@ -7,15 +7,21 @@ import (
 )
 
 type InterpolatedTrajectory struct {
-	trajectory speed.SpeedTrajectory
-	acc        model.Accelerometer
+	Trajectory speed.SpeedTrajectory
+	Acc        model.Accelerometer
 }
 
 func CreateTrajectory(trajectory *speed.SpeedTrajectory, acc *model.Accelerometer) InterpolatedTrajectory {
 	return InterpolatedTrajectory{
-		trajectory: *trajectory,
-		acc:        *acc,
+		Trajectory: *trajectory,
+		Acc:        *acc,
 	}
 }
 
-// func TakeValues
+func (it *InterpolatedTrajectory) TakeValues(start, finish int) ([]float64, []float64, []float64, []model.Point, []model.Point) {
+	if start > finish {
+		start, finish = finish, start
+	}
+
+	return nil, nil, nil, nil, nil
+}
