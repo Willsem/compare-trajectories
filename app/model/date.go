@@ -3,6 +3,7 @@ package model
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"time"
 )
@@ -29,4 +30,8 @@ func (d ParsedDate) MarshalJSON() ([]byte, error) {
 	}
 
 	return []byte(fmt.Sprintf(`"%s"`, d.Time.Format(layout))), nil
+}
+
+func DateDiffSeconds(d1, d2 ParsedDate) float64 {
+	return float64(d1.UnixNano()-d2.UnixNano()) / math.Pow(10, 9)
 }
