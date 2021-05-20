@@ -2,9 +2,8 @@
 package speed
 
 import (
-	"math"
-
 	"github.com/Willsem/compare-trajectories/app/model"
+	"github.com/Willsem/compare-trajectories/app/service/math"
 )
 
 type SpeedTrajectory struct {
@@ -26,7 +25,7 @@ func Create(gps model.Gps) SpeedTrajectory {
 		x2 := st.Gps.Long[i]
 		y2 := st.Gps.Lat[i]
 
-		length += distance(x1, y1, x2, y2)
+		length += math.Distance(x1, y1, x2, y2)
 	}
 
 	st.Speed[0] = 0
@@ -36,15 +35,11 @@ func Create(gps model.Gps) SpeedTrajectory {
 		x2 := st.Gps.Long[i]
 		y2 := st.Gps.Lat[i]
 
-		dist := distance(x1, y1, x2, y2)
+		dist := math.Distance(x1, y1, x2, y2)
 		time := model.DateDiffSeconds(st.Gps.Date[i], st.Gps.Date[i-1])
 
 		st.Speed[i] = (dist / length * 100) / time
 	}
 
 	return st
-}
-
-func distance(x1, y1, x2, y2 float64) float64 {
-	return math.Pow(x1-x2, 2) + math.Pow(y1-y2, 2)
 }
