@@ -18,6 +18,7 @@ func Create(gps model.Gps) SpeedTrajectory {
 		Speed: make([]float64, gps.Len()),
 	}
 
+	st.Speed[0] = 0
 	for i := 1; i < gps.Len(); i++ {
 		x1 := st.Gps.Long[i-1]
 		y1 := st.Gps.Lat[i-1]
@@ -27,7 +28,7 @@ func Create(gps model.Gps) SpeedTrajectory {
 		dist := math.Pow(x1-x2, 2) + math.Pow(y1-y2, 2)
 		time := model.DateDiffSeconds(st.Gps.Date[i], st.Gps.Date[i-1])
 
-		st.Speed[i-1] = dist / time
+		st.Speed[i] = dist / time
 	}
 
 	return st
