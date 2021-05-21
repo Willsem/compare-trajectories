@@ -1,11 +1,11 @@
-// Ported from https://github.com/Tagussan/BSpline
+// Ported from https://github.com/Tagussan/Bspline
 package spline
 
 import (
 	"math"
 )
 
-type bspline struct {
+type Bspline struct {
 	points [][]float64
 	degree int
 	copy   bool
@@ -19,15 +19,15 @@ var (
 	baseFuncRangeInt int
 )
 
-func NewBSpline(points [][]float64, degree int, copy bool) *bspline {
-	return &bspline{
+func NewBspline(points [][]float64, degree int, copy bool) *Bspline {
+	return &Bspline{
 		points,
 		degree,
 		copy,
 	}
 }
 
-func (self *bspline) Init() {
+func (self *Bspline) Init() {
 	if self.copy {
 		pts = make([][]float64, len(self.points))
 		for i := 0; i < len(self.points); i++ {
@@ -54,7 +54,7 @@ func (self *bspline) Init() {
 	}
 }
 
-func (self *bspline) seqAt(dim int) func(int) float64 {
+func (self *Bspline) seqAt(dim int) func(int) float64 {
 	margin := self.degree + 1
 
 	return func(n int) float64 {
@@ -69,7 +69,7 @@ func (self *bspline) seqAt(dim int) func(int) float64 {
 	}
 }
 
-func (self *bspline) baseDeg2(x float64) float64 {
+func (self *Bspline) baseDeg2(x float64) float64 {
 	if x >= -0.5 && x < 0.5 {
 		return 0.75 - x*x
 	} else if x >= 0.5 && x <= 1.5 {
@@ -81,7 +81,7 @@ func (self *bspline) baseDeg2(x float64) float64 {
 	}
 }
 
-func (self *bspline) baseDeg3(x float64) float64 {
+func (self *Bspline) baseDeg3(x float64) float64 {
 	if x >= -1.0 && x < 0 {
 		return 2.0/3.0 + (-1.0-x/2.0)*x*x
 	} else if x >= 1 && x <= 2 {
@@ -95,7 +95,7 @@ func (self *bspline) baseDeg3(x float64) float64 {
 	}
 }
 
-func (self *bspline) baseDeg4(x float64) float64 {
+func (self *Bspline) baseDeg4(x float64) float64 {
 	if x >= -1.5 && x < -0.5 {
 		return 55.0/96.0 + x*(-(5.0/24.0)+x*(-(5.0/4.0)+(-(5.0/6.0)-x/6.0)*x))
 	} else if x >= 0.5 && x < 1.5 {
@@ -111,7 +111,7 @@ func (self *bspline) baseDeg4(x float64) float64 {
 	}
 }
 
-func (self *bspline) baseDeg5(x float64) float64 {
+func (self *Bspline) baseDeg5(x float64) float64 {
 	if x >= -2.0 && x < -1 {
 		return 17.0/40.0 + x*(-(5.0/8.0)+x*(-(7.0/4.0)+x*(-(5.0/4.0)+(-(3.0/8.0)-x/24.0)*x)))
 	} else if x >= 0 && x < 1 {
@@ -129,7 +129,7 @@ func (self *bspline) baseDeg5(x float64) float64 {
 	}
 }
 
-func (self *bspline) getInterpol(seq func(int) float64, t float64) float64 {
+func (self *Bspline) getInterpol(seq func(int) float64, t float64) float64 {
 	tInt := int(math.Floor(t))
 	var result float64
 	for i := tInt - baseFuncRangeInt; i <= tInt+baseFuncRangeInt; i++ {
@@ -138,7 +138,7 @@ func (self *bspline) getInterpol(seq func(int) float64, t float64) float64 {
 	return result
 }
 
-func (self *bspline) Interpolate(t float64) []float64 {
+func (self *Bspline) Interpolate(t float64) []float64 {
 	t = t * ((float64(degree)+1.0)*2.0 + float64(len(pts))) // t must be between 0...1
 	result := []float64{}
 	for i := 0; i < dimension; i++ {
