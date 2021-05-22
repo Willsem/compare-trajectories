@@ -67,3 +67,15 @@ jobs:
     steps:
       - name: 'Check Out Repo'
         uses: actions/checkout@v2
+
+      - name: 'Download binary client'
+        uses: actions/download-artifact@v2
+        with:
+          name: client-bin
+          path: ./client/build
+
+      - name: 'Download binary server'
+        uses: actions/download-artifact@v2
+        with:
+          name: server-bin
+          path: ./server
