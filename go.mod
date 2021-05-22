@@ -9,4 +9,5 @@ require (
 	github.com/konimarti/lti v0.0.1 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	gonum.org/v1/gonum v0.9.1 // indirect
+	pgregory.net/changepoint v0.1.5 // indirect
 )
