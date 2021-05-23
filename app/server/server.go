@@ -3,6 +3,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -111,7 +112,10 @@ func (s *Server) error(w http.ResponseWriter, r *http.Request, code int, err err
 }
 
 func (s *Server) respond(w http.ResponseWriter, r *http.Request, code int, data interface{}) {
-	w.WriteHeader(code)
+	w.Header().Set("status", fmt.Sprint(code))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
 	if data != nil {
 		json.NewEncoder(w).Encode(data)
 	}

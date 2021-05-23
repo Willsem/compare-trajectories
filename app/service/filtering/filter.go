@@ -29,7 +29,7 @@ func KalmanFilter(x []float64, y []float64) (filteredX []float64, filteredY []fl
 		}),
 	}
 
-	dt := 0.00001
+	dt := 0.0000000000001
 
 	lti := lti.Discrete{
 		// prediction matrix
