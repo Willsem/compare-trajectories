@@ -1,11 +1,15 @@
 import { Component } from 'react';
 import Map from './Map';
+import LoadFile from './LoadFile';
 import '../styles/App.css';
 
 class App extends Component {
   render() {
     return (
-      <Map />
+      <div>
+        <Map />
+        <LoadFile />
+      </div>
     );
   }
 }
