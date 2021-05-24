@@ -1,0 +1,5 @@
+.app {
+  box-sizing: padding-box;
+  height: 100vh;
+  display: flex;
+}

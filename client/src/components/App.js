@@ -6,9 +6,9 @@ import '../styles/App.css';
 class App extends Component {
   render() {
     return (
-      <div>
-        <Map />
-        <LoadFile />
+      <div class="app">
+        <Map class="map" />
+        <LoadFile class="files" />
       </div>
     );
   }
