@@ -9,6 +9,7 @@ const baseStyle = {
   padding: '20px',
   height: '100%',
   borderWidth: 2,
+  justifyContent: 'center',
   borderRadius: 10,
   borderColor: '#eeeeee',
   borderStyle: 'dashed',
