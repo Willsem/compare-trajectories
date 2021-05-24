@@ -1,0 +1,7 @@
+FROM ubuntu
+
+COPY . .
+
+EXPOSE 8080
+
+ENTRYPOINT ["./server"]
