@@ -1,12 +1,12 @@
 import Map from './Map';
-import LoadFile from './LoadFile';
+import LoadFiles from './LoadFiles';
 import '../styles/App.css';
 
 function App() {
   return (
     <div class="app">
       <Map class="map" />
-      <LoadFile class="files" />
+      <LoadFiles class="files" />
     </div>
   );
 }

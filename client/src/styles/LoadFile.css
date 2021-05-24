@@ -1,0 +1,13 @@
+.load-container {
+  width: 30%;
+  box-sizing: padding-box;
+  padding: 10px;
+}
+
+.load-container .container {
+  height: 45%;
+}
+
+.load-container h4 {
+  text-align: center;
+}
