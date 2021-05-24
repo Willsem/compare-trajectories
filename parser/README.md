@@ -4,13 +4,13 @@
 
 ## Использование
 
-```sh
+```
 python3 main.py --acc AcceletometerFile --gps GpsFile --out OutFile
 ```
 
 ### Accelerometer
 
-```json
+```
 {
     "date": datetime[],
     "acc" : [{
@@ -28,7 +28,7 @@ python3 main.py --acc AcceletometerFile --gps GpsFile --out OutFile
 
 ### GPS
 
-```json
+```
 {
     "date": datetime[],
     "long": float[],
