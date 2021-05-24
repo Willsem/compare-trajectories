@@ -7,6 +7,7 @@ const baseStyle = {
   flexDirection: 'column',
   alignItems: 'center',
   padding: '20px',
+  height: '100%',
   borderWidth: 2,
   borderRadius: 10,
   borderColor: '#eeeeee',
@@ -14,19 +15,19 @@ const baseStyle = {
   backgroundColor: '#fafafa',
   color: '#bdbdbd',
   outline: 'none',
-  transition: 'border .24s ease-in-out'
+  transition: 'border .24s ease-in-out',
 };
 
 const activeStyle = {
-  borderColor: '#2196f3'
+  borderColor: '#2196f3',
 };
 
 const acceptStyle = {
-  borderColor: '#00e676'
+  borderColor: '#00e676',
 };
 
 const rejectStyle = {
-  borderColor: '#ff1744'
+  borderColor: '#ff1744',
 };
 
 function DropZoneFile() {

@@ -2,12 +2,16 @@
   width: 30%;
   box-sizing: padding-box;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .load-container .container {
-  height: 45%;
+  height: 50%;
 }
 
 .load-container h4 {
   text-align: center;
+  color: #666;
 }
