@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, Polyline, LayersControl } from 'react-leaflet';
 import { filtering } from '../api/filtering'
+import { compare } from '../api/compare'
 import ChangeMapView from './ChangeMapView';
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
@@ -16,15 +17,47 @@ function convertToPolyline(trajectory) {
   return polyline;
 }
 
-const optionsRed = {color: "red"};
-const optionsGreen = {color: "green"};
+function convertBacklogToColor(backlog) {
+  if (backlog > 0.3) {
+    return 'green';
+  }
+
+  if (backlog < -0.3) {
+    return 'red';
+  }
+
+  return 'yellow';
+}
+
+const optionsPerfect = {color: 'black'};
+const optionsCompared = {color: 'grey'}
 
 function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
-  let filteredPerfectTrajectory = filtering(perfectTrajectory.gps);
-  let filteredComparedTrajectory = comparedTrajectory.gps // filtering(comparedTrajectory.gps);
+  if (!perfectTrajectory.filtered) {
+    perfectTrajectory.gps = filtering(perfectTrajectory.gps);
+    perfectTrajectory.filtered = true;
+  }
 
-  let perfectPolyline = convertToPolyline(filteredPerfectTrajectory);
-  let comparedPolyline = convertToPolyline(filteredComparedTrajectory);
+  if (!comparedTrajectory.filtered) {
+    comparedTrajectory.gps = filtering(comparedTrajectory.gps);
+    comparedTrajectory.filtered = true;
+  }
+
+  const perfectPolyline = convertToPolyline(perfectTrajectory.gps);
+  const comparedPolyline = convertToPolyline(comparedTrajectory.gps);
+  const compareResult = compare(perfectTrajectory, comparedTrajectory);
+
+  console.log(compareResult);
+  let comparedTrajectoryElement = [];
+  if (compareResult && !compareResult.error) {
+    for (let i = 0; i < compareResult.length; ++i) {
+      const options = {color: convertBacklogToColor(compareResult[i].backlog[0])};
+      const polyline = convertToPolyline(compareResult[i])
+      comparedTrajectoryElement.push({'option': options, 'positions': polyline});
+    }
+  } else {
+    comparedTrajectoryElement.push({'option': optionsCompared, 'positions': comparedPolyline});
+  }
 
   return (
     <MapContainer className='map-container' center={position} zoom={zoom} scrollWheelZoom={true}>
@@ -32,13 +65,14 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
 
       <LayersControl position="topright">
         <LayersControl.Overlay checked name="Good Trajectory">
-          <Polyline pathOptions={optionsGreen} positions={perfectPolyline} />
+          <Polyline pathOptions={optionsPerfect} positions={perfectPolyline} />
         </LayersControl.Overlay>
         <LayersControl.Overlay checked name="Compared Trajectory">
-          <Polyline pathOptions={optionsRed} positions={comparedPolyline} />
         </LayersControl.Overlay>
       </LayersControl>
-
+        {comparedTrajectoryElement.map(item =>
+          <Polyline pathOptions={item.option} positions={item.positions} />
+        )}
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
