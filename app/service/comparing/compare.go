@@ -9,6 +9,13 @@ import (
 )
 
 func Compare(perfect model.Trajectory, compared model.Trajectory) (cts []model.ComparedTrajectory, err error) {
+	defer func() {
+		rec := recover()
+		if rec != nil {
+			err = rec.(error)
+		}
+	}()
+
 	err = perfect.Check()
 	if err != nil {
 		return
