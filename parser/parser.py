@@ -8,13 +8,13 @@ class Point:
 class AccelerometerData:
     def __init__(self):
         self.date = []
-        self.accelerometer = []
-        self.gyroscope = []
+        self.acc = []
+        self.gyro = []
 
     def append(self, strdate, ax, ay, az, gx, gy, gz):
         self.date.append(strdate)
-        self.accelerometer.append(Point(ax, ay, az).__dict__)
-        self.gyroscope.append(Point(gx, gy, gz).__dict__)
+        self.acc.append(Point(ax, ay, az).__dict__)
+        self.gyro.append(Point(gx, gy, gz).__dict__)
 
 
 class GpsData:
