@@ -1,0 +1,6 @@
+## Source files
+gps*
+accelerometer*
+
+## Parsed files
+*.json
