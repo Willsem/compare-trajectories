@@ -3,9 +3,6 @@ import { filtering } from '../api/filtering'
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
 
-let perfectTrajectory;
-let comparedTrajectory;
-
 function convertToPolyline(trajectory) {
   let polyline = [];
 
@@ -24,10 +21,12 @@ function getPosition(polyline1, polyline2) {
   }
 
   return [[
-    (polyline1.reduce((s, c) => s + c[0]) + polyline2.reduce((s, c) => s + c[0])) /
+    ((polyline1.length ? polyline1.reduce((s, c) => s + c[0]) : 0) +
+    (polyline2.lenght ? polyline2.reduce((s, c) => s + c[0]) : 0)) /
     (polyline1.length + polyline2.length),
 
-    (polyline1.reduce((s, c) => s + c[1]) + polyline2.reduce((s, c) => s + c[1])) /
+    ((polyline1.lenght ? polyline1.reduce((s, c) => s + c[1]) : 0) +
+    (polyline2.lenght ? polyline2.reduce((s, c) => s + c[1]) : 0)) /
     (polyline1.length + polyline2.length),
   ], 13];
 }
@@ -35,9 +34,9 @@ function getPosition(polyline1, polyline2) {
 const optionsRed = {color: "red"};
 const optionsGreen = {color: "green"};
 
-function Map() {
-  let filteredPerfectTrajectory = filtering(perfectTrajectory);
-  let filteredComparedTrajectory = filtering(comparedTrajectory);
+function Map({ perfectTrajectory, comparedTrajectory }) {
+  let filteredPerfectTrajectory = filtering(perfectTrajectory.gps);
+  let filteredComparedTrajectory = filtering(comparedTrajectory.gps);
 
   let perfectPolyline = convertToPolyline(filteredPerfectTrajectory);
   let comparedPolyline = convertToPolyline(filteredComparedTrajectory);

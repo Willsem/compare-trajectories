@@ -1,27 +1,25 @@
 import DropZoneFile from './DropZoneFile';
 import '../styles/LoadFile.css'
 
-function LoadFiles() {
+function LoadFiles({ setPerfectTrajectory, setComparedTrajectory }) {
   const loadPerfectFile = (file) => {
-    console.log('perfect');
-    console.log(file);
+    setPerfectTrajectory(file);
   };
 
   const loadComparedFile = (file) => {
-    console.log('compared');
-    console.log(file);
+    setComparedTrajectory(file);
   };
 
   return (
     <div className="load-container">
       <section className="container">
         <h4>Perfect trajectory</h4>
-        <DropZoneFile loadFileCallback={loadPerfectFile} />
+        <DropZoneFile loadFileCallback={loadPerfectFile} fieldName="perfect" />
       </section>
 
       <section className="container">
         <h4>Compared trajectory</h4>
-        <DropZoneFile loadFileCallback={loadComparedFile} />
+        <DropZoneFile loadFileCallback={loadComparedFile} fieldName="compared" />
       </section>
     </div>
   );
