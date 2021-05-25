@@ -94,5 +94,7 @@ func difference(perfect interpolation.InterpolatedTrajectory, compared speed.Spe
 		ct.DeltaGyro[i].Z = gyro[minIndex].Z - comparedAcc.Gyro[accIndex].Z
 	}
 
+	ct.Backlog = math.Normalize(ct.Backlog)
+
 	return
 }
