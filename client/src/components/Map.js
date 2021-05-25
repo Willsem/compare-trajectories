@@ -1,12 +1,13 @@
 import { MapContainer, TileLayer, Polyline, LayersControl } from 'react-leaflet';
 import { filtering } from '../api/filtering'
+import ChangeMapView from './ChangeMapView';
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
 
 function convertToPolyline(trajectory) {
   let polyline = [];
 
-  if (!trajectory.error) {
+  if (trajectory && !trajectory.error) {
     for (let i = 0; i < trajectory.long.length; ++i) {
       polyline[i] = [trajectory.long[i], trajectory.lat[i]];
     }
@@ -15,36 +16,19 @@ function convertToPolyline(trajectory) {
   return polyline;
 }
 
-function getPosition(polyline1, polyline2) {
-  if (polyline1.length + polyline2.length === 0) {
-    return [[0, 0], 2];
-  }
-
-  return [[
-    ((polyline1.length ? polyline1.reduce((s, c) => s + c[0]) : 0) +
-    (polyline2.lenght ? polyline2.reduce((s, c) => s + c[0]) : 0)) /
-    (polyline1.length + polyline2.length),
-
-    ((polyline1.lenght ? polyline1.reduce((s, c) => s + c[1]) : 0) +
-    (polyline2.lenght ? polyline2.reduce((s, c) => s + c[1]) : 0)) /
-    (polyline1.length + polyline2.length),
-  ], 13];
-}
-
 const optionsRed = {color: "red"};
 const optionsGreen = {color: "green"};
 
-function Map({ perfectTrajectory, comparedTrajectory }) {
+function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
   let filteredPerfectTrajectory = filtering(perfectTrajectory.gps);
-  let filteredComparedTrajectory = filtering(comparedTrajectory.gps);
+  let filteredComparedTrajectory = comparedTrajectory.gps // filtering(comparedTrajectory.gps);
 
   let perfectPolyline = convertToPolyline(filteredPerfectTrajectory);
   let comparedPolyline = convertToPolyline(filteredComparedTrajectory);
 
-  let [position, zoom] = getPosition(perfectPolyline, comparedPolyline);
-
   return (
     <MapContainer className='map-container' center={position} zoom={zoom} scrollWheelZoom={true}>
+      <ChangeMapView position={position} zoom={zoom} />
 
       <LayersControl position="topright">
         <LayersControl.Overlay checked name="Good Trajectory">
