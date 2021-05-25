@@ -4,3 +4,6 @@ accelerometer*
 
 ## Parsed files
 *.json
+
+## Python cache
+**/__pycache__/**
