@@ -3,41 +3,56 @@ import { filtering } from '../api/filtering'
 import 'leaflet/dist/leaflet.css';
 import '../styles/Map.css';
 
-function Map() {
-  let trajectory = {};
-  let loaded = false;
+let perfectTrajectory;
+let comparedTrajectory;
 
-  let position = [0, 0];
-  let zoom = 13;
-
+function convertToPolyline(trajectory) {
   let polyline = [];
 
-  if (loaded) {
-    trajectory = filtering(trajectory);
-
+  if (!trajectory.error) {
     for (let i = 0; i < trajectory.long.length; ++i) {
       polyline[i] = [trajectory.long[i], trajectory.lat[i]];
-
-      position[0] += polyline[i][0];
-      position[1] += polyline[i][1];
     }
-
-    position[0] /= polyline.length;
-    position[1] /= polyline.length;
-  } else {
-    zoom = 2;
   }
 
-  const optionsRed = {color: "red"};
+  return polyline;
+}
+
+function getPosition(polyline1, polyline2) {
+  if (polyline1.length + polyline2.length === 0) {
+    return [[0, 0], 2];
+  }
+
+  return [[
+    (polyline1.reduce((s, c) => s + c[0]) + polyline2.reduce((s, c) => s + c[0])) /
+    (polyline1.length + polyline2.length),
+
+    (polyline1.reduce((s, c) => s + c[1]) + polyline2.reduce((s, c) => s + c[1])) /
+    (polyline1.length + polyline2.length),
+  ], 13];
+}
+
+const optionsRed = {color: "red"};
+const optionsGreen = {color: "green"};
+
+function Map() {
+  let filteredPerfectTrajectory = filtering(perfectTrajectory);
+  let filteredComparedTrajectory = filtering(comparedTrajectory);
+
+  let perfectPolyline = convertToPolyline(filteredPerfectTrajectory);
+  let comparedPolyline = convertToPolyline(filteredComparedTrajectory);
+
+  let [position, zoom] = getPosition(perfectPolyline, comparedPolyline);
+
   return (
     <MapContainer className='map-container' center={position} zoom={zoom} scrollWheelZoom={true}>
 
       <LayersControl position="topright">
         <LayersControl.Overlay checked name="Good Trajectory">
-          <Polyline pathOptions={optionsRed} positions={polyline} />
+          <Polyline pathOptions={optionsGreen} positions={perfectPolyline} />
         </LayersControl.Overlay>
         <LayersControl.Overlay checked name="Compared Trajectory">
-          <Polyline pathOptions={optionsRed} positions={polyline} />
+          <Polyline pathOptions={optionsRed} positions={comparedPolyline} />
         </LayersControl.Overlay>
       </LayersControl>
 

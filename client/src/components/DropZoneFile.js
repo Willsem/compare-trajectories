@@ -61,7 +61,7 @@ function DropZoneFile() {
       reader.readAsText(file);
 
       reader.onload = function() {
-        console.log(reader.result);
+        JSON.parse(reader.result);
       };
     }
   });
