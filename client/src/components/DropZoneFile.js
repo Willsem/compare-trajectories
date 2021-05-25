@@ -31,6 +31,8 @@ const rejectStyle = {
   borderColor: '#ff1744',
 };
 
+let lastFile = '';
+
 function DropZoneFile() {
   const {
     getRootProps,
@@ -38,7 +40,7 @@ function DropZoneFile() {
     isDragActive,
     isDragAccept,
     isDragReject,
-    // acceptedFiles,
+    acceptedFiles,
   } = useDropzone({accept: 'application/json'});
 
   const style = useMemo(() => ({
@@ -51,6 +53,18 @@ function DropZoneFile() {
     isDragReject,
     isDragAccept
   ]);
+
+  acceptedFiles.forEach(file => {
+    if (file.name !== lastFile) {
+      lastFile = file.name;
+      let reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = function() {
+        console.log(reader.result);
+      };
+    }
+  });
 
   return (
     <div className="container">
