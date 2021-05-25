@@ -4,8 +4,8 @@ import LoadFiles from './LoadFiles';
 import '../styles/App.css';
 
 function App() {
-  const [perfectTrajectory, setPerfectTrajectory] = useState(0);
-  const [comparedTrajectory, setComparedTrajectory] = useState(0);
+  const [perfectTrajectory, setPerfectTrajectory] = useState({'gps': null, 'acc': null});
+  const [comparedTrajectory, setComparedTrajectory] = useState({'gps': null, 'acc': null});
 
   const [position, setPosition] = useState([0, 0]);
   const [zoom, setZoom] = useState(2);
