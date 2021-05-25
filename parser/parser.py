@@ -36,7 +36,6 @@ class GpsData:
 
 
 def get_dict(gps, acc):
-    print(acc)
     return {
         'gps': gps,
         'acc': acc,
