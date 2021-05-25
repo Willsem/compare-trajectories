@@ -11,7 +11,7 @@ type Accelerometer struct {
 
 func (acc *Accelerometer) Check() error {
 	if len(acc.Date) != len(acc.Acc) || len(acc.Date) != len(acc.Gyro) || len(acc.Acc) != len(acc.Gyro) {
-		return errors.New("various len of arrays in gps")
+		return errors.New("various len of arrays in accelerometer")
 	}
 	return nil
 }

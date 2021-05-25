@@ -2,9 +2,9 @@
 package model
 
 type Point struct {
-	X int `json:"x"`
-	Y int `json:"y"`
-	Z int `json:"z"`
+	X int `json:"x,string"`
+	Y int `json:"y,string"`
+	Z int `json:"z,string"`
 }
 
 func NewPoint(x, y, z int) (p *Point) {
