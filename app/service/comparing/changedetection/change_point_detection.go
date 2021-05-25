@@ -21,6 +21,8 @@ func ChangePointDetection(trajectory *model.ComparedTrajectory) []model.Compared
 		part := model.ComparedTrajectory{}
 		for j := start; j <= finish; j++ {
 			part.Backlog = append(part.Backlog, trajectory.Backlog[j])
+			part.Long = append(part.Long, trajectory.Long[j])
+			part.Lat = append(part.Lat, trajectory.Lat[j])
 			part.DeltaLat = append(part.Backlog, trajectory.DeltaLat[j])
 			part.DeltaLong = append(part.Backlog, trajectory.DeltaLong[j])
 			part.DeltaAcc = append(part.DeltaAcc, trajectory.DeltaAcc[j])

@@ -13,6 +13,8 @@ import (
 func difference(perfect interpolation.InterpolatedTrajectory, compared speed.SpeedTrajectory, comparedAcc model.Accelerometer) (ct model.ComparedTrajectory, err error) {
 	ct = model.ComparedTrajectory{
 		Backlog:   make([]float64, compared.Gps.Len()),
+		Long:      make([]float64, compared.Gps.Len()),
+		Lat:       make([]float64, compared.Gps.Len()),
 		DeltaLong: make([]float64, compared.Gps.Len()),
 		DeltaLat:  make([]float64, compared.Gps.Len()),
 		DeltaAcc:  make([]model.Point, compared.Gps.Len()),
@@ -82,6 +84,10 @@ func difference(perfect interpolation.InterpolatedTrajectory, compared speed.Spe
 		}
 
 		ct.Backlog[i] = speed[minIndex] - compared.Speed[i]
+
+		ct.Long[i] = compared.Gps.Long[i]
+		ct.Lat[i] = compared.Gps.Lat[i]
+
 		ct.DeltaLat[i] = lat[minIndex] - compared.Gps.Lat[i]
 		ct.DeltaLong[i] = long[minIndex] - compared.Gps.Long[i]
 
