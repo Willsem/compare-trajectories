@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const baseStyle = {
@@ -33,7 +33,9 @@ const rejectStyle = {
 
 let lastFile = '';
 
-function DropZoneFile() {
+function DropZoneFile({ loadFileCallback }) {
+  const [, setFile] = useState(0);
+
   const {
     getRootProps,
     getInputProps,
@@ -61,7 +63,9 @@ function DropZoneFile() {
       reader.readAsText(file);
 
       reader.onload = function() {
-        JSON.parse(reader.result);
+        const parsedFile = JSON.parse(reader.result);
+        setFile(parsedFile);
+        loadFileCallback(parsedFile);
       };
     }
   });
