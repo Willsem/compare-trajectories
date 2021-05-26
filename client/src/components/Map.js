@@ -71,7 +71,7 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
       <ChangeMapView position={position} zoom={zoom} />
 
       <LayersControl position="topright">
-        <LayersControl.Overlay checked name="Good Trajectory">
+        <LayersControl.Overlay checked name="Reference Trajectory">
           <Polyline pathOptions={optionsPerfect} positions={perfectPolyline} />
         </LayersControl.Overlay>
         <LayersControl.Overlay checked name="Compared Trajectory">
