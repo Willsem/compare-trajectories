@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Polyline, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, LayersControl, LayerGroup } from 'react-leaflet';
 import { filtering } from '../api/filtering'
 import { compare } from '../api/compare'
 import ChangeMapView from './ChangeMapView';
@@ -47,11 +47,11 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
   const comparedPolyline = convertToPolyline(comparedTrajectory.gps);
   const compareResult = compare(perfectTrajectory, comparedTrajectory);
 
-  console.log(compareResult);
   let comparedTrajectoryElement = [];
   if (compareResult && !compareResult.error) {
     for (let i = 0; i < compareResult.length; ++i) {
-      const options = {color: convertBacklogToColor(compareResult[i].backlog[0])};
+      const backlog = compareResult[i].backlog;
+      const options = {color: convertBacklogToColor(backlog[0] - backlog[backlog.length - 1])};
       const polyline = convertToPolyline(compareResult[i])
       comparedTrajectoryElement.push({'option': options, 'positions': polyline});
     }
@@ -68,11 +68,13 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
           <Polyline pathOptions={optionsPerfect} positions={perfectPolyline} />
         </LayersControl.Overlay>
         <LayersControl.Overlay checked name="Compared Trajectory">
+          <LayerGroup>
+            {comparedTrajectoryElement.map(item =>
+              <Polyline pathOptions={item.option} positions={item.positions} />
+            )}
+          </LayerGroup>
         </LayersControl.Overlay>
       </LayersControl>
-        {comparedTrajectoryElement.map(item =>
-          <Polyline pathOptions={item.option} positions={item.positions} />
-        )}
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
