@@ -1,4 +1,12 @@
-import { MapContainer, TileLayer, Polyline, LayersControl, LayerGroup } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Polyline,
+  LayersControl,
+  LayerGroup,
+  Tooltip
+} from 'react-leaflet';
+
 import { filtering } from '../api/filtering'
 import { compare } from '../api/compare'
 import ChangeMapView from './ChangeMapView';
@@ -9,8 +17,7 @@ function convertToPolyline(trajectory) {
   let polyline = [];
 
   if (trajectory && !trajectory.error) {
-    for (let i = 0; i < trajectory.long.length; ++i) {
-      polyline[i] = [trajectory.long[i], trajectory.lat[i]];
+    for (let i = 0; i < trajectory.long.length; ++i) { polyline[i] = [trajectory.long[i], trajectory.lat[i]];
     }
   }
 
@@ -70,7 +77,9 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
         <LayersControl.Overlay checked name="Compared Trajectory">
           <LayerGroup>
             {comparedTrajectoryElement.map(item =>
-              <Polyline pathOptions={item.option} positions={item.positions} />
+              <Polyline pathOptions={item.option} positions={item.positions}>
+                <Tooltip sticky>Test tooltip</Tooltip>
+              </Polyline>
             )}
           </LayerGroup>
         </LayersControl.Overlay>
