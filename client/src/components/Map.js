@@ -40,6 +40,14 @@ function difference(array) {
   return array[0] - array[array.length - 1];
 }
 
+function pointDifference(array) {
+  return {
+    'x': array[0].x - array[array.length - 1].x,
+    'y': array[0].y - array[array.length - 1].y,
+    'z': array[0].z - array[array.length - 1].z,
+  };
+}
+
 const optionsPerfect = {color: 'black'};
 const optionsCompared = {color: 'grey'}
 
@@ -68,8 +76,8 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
         'backlog': difference(backlog),
         'dlong': difference(compareResult[i].dlong),
         'dlat': difference(compareResult[i].dlat),
-        'dacc': difference(compareResult[i].dacc),
-        'dgyro': difference(compareResult[i].dgyro),
+        'dacc': pointDifference(compareResult[i].dacc),
+        'dgyro': pointDifference(compareResult[i].dgyro),
       }});
     }
   } else {
