@@ -71,7 +71,7 @@ function DropZoneFile({ loadFileCallback, fieldName }) {
     <div className="container">
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop json file here, or click to select it</p>
+        <p>Перетащите сюда json-файл или нажмите, чтобы загрузить его</p>
       </div>
     </div>
   );

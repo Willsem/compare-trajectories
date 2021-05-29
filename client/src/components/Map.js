@@ -87,23 +87,23 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
       <ChangeMapView position={position} zoom={zoom} />
 
       <LayersControl position="topright">
-        <LayersControl.Overlay checked name="Reference Trajectory">
+        <LayersControl.Overlay checked name="Эталонная траектория">
           <Polyline pathOptions={optionsPerfect} positions={perfectPolyline} />
         </LayersControl.Overlay>
-        <LayersControl.Overlay checked name="Compared Trajectory">
+        <LayersControl.Overlay checked name="Сравниваемая траектория">
           <LayerGroup>
             {comparedTrajectoryElement.map(item =>
               <Polyline pathOptions={item.option} positions={item.positions}>
                 <Tooltip sticky>
                   <pre>
-                    {'Backlog: ' + item.diff.backlog + '\n\n' +
-                    'Delta longitude: ' + item.diff.dlong + '\n' +
-                    'Delta latitude: ' + item.diff.dlat + '\n\n' +
-                    'Delta accelerometer:\n' +
+                    {'Отставание: ' + item.diff.backlog + '\n\n' +
+                    'Разница широты: ' + item.diff.dlong + '\n' +
+                    'Разница долготы: ' + item.diff.dlat + '\n\n' +
+                    'Разница акселерометра:\n' +
                     'x: ' + item.diff.dacc.x + '\n' +
                     'y: ' + item.diff.dacc.y + '\n' +
                     'z: ' + item.diff.dacc.z + '\n\n' +
-                    'Delta gyroscope:\n' +
+                    'Разница гироскопа:\n' +
                     'x: ' + item.diff.dgyro.x + '\n' +
                     'y: ' + item.diff.dgyro.y + '\n' +
                     'z: ' + item.diff.dgyro.z}

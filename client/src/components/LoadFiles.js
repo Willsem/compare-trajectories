@@ -32,12 +32,12 @@ function LoadFiles({ setPerfectTrajectory, setComparedTrajectory, setPosition, s
   return (
     <div className="load-container">
       <section className="container">
-        <h4>Reference trajectory</h4>
+        <h4>Эталонная траектория</h4>
         <DropZoneFile loadFileCallback={loadPerfectFile} fieldName="perfect" />
       </section>
 
       <section className="container">
-        <h4>Compared trajectory</h4>
+        <h4>Сравниваемая траектория</h4>
         <DropZoneFile loadFileCallback={loadComparedFile} fieldName="compared" />
       </section>
     </div>
