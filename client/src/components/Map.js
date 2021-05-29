@@ -36,6 +36,10 @@ function convertBacklogToColor(backlog) {
   return 'yellow';
 }
 
+function difference(array) {
+  return array[0] - array[array.length - 1];
+}
+
 const optionsPerfect = {color: 'black'};
 const optionsCompared = {color: 'grey'}
 
@@ -58,15 +62,14 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
   if (compareResult && !compareResult.error) {
     for (let i = 0; i < compareResult.length; ++i) {
       const backlog = compareResult[i].backlog;
-      const options = {color: convertBacklogToColor(backlog[0] - backlog[backlog.length - 1])};
+      const options = {color: convertBacklogToColor(difference(backlog))};
       const polyline = convertToPolyline(compareResult[i])
-      console.log(compareResult[i]);
       comparedTrajectoryElement.push({'option': options, 'positions': polyline, 'diff': {
-        'backlog': backlog,
-        'dlong': compareResult[i].dlong[0],
-        'dlat': compareResult[i].dlat[0],
-        'dacc': compareResult[i].dacc[0],
-        'dgyro': compareResult[i].dgyro[0],
+        'backlog': difference(backlog),
+        'dlong': difference(compareResult[i].dlong),
+        'dlat': difference(compareResult[i].dlat),
+        'dacc': difference(compareResult[i].dacc),
+        'dgyro': difference(compareResult[i].dgyro),
       }});
     }
   } else {
@@ -91,16 +94,15 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
           <LayerGroup>
             {comparedTrajectoryElement.map(item =>
               <Polyline pathOptions={item.option} positions={item.positions}>
-              // TODO: fix
                 <Tooltip sticky>
                   <pre>
-                    {'Backlog: ' + item.diff.backlog + '\n' +
+                    {'Backlog: ' + item.diff.backlog + '\n\n' +
                     'Delta longitude: ' + item.diff.dlong + '\n' +
-                    'Delta latitude: ' + item.diff.dlat + '\n' +
+                    'Delta latitude: ' + item.diff.dlat + '\n\n' +
                     'Delta accelerometer:\n' +
                     'x: ' + item.diff.dacc.x + '\n' +
                     'y: ' + item.diff.dacc.y + '\n' +
-                    'z: ' + item.diff.dacc.z + '\n' +
+                    'z: ' + item.diff.dacc.z + '\n\n' +
                     'Delta gyroscope:\n' +
                     'x: ' + item.diff.dgyro.x + '\n' +
                     'y: ' + item.diff.dgyro.y + '\n' +
