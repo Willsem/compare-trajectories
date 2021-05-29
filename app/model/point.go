@@ -7,6 +7,12 @@ type Point struct {
 	Z int `json:"z,string"`
 }
 
+type FloatPoint struct {
+	X float64 `json:"x,string"`
+	Y float64 `json:"y,string"`
+	Z float64 `json:"z,string"`
+}
+
 func NewPoint(x, y, z int) (p *Point) {
 	p.X = x
 	p.Y = y

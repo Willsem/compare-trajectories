@@ -17,8 +17,8 @@ func difference(perfect interpolation.InterpolatedTrajectory, compared speed.Spe
 		Lat:       make([]float64, compared.Gps.Len()),
 		DeltaLong: make([]float64, compared.Gps.Len()),
 		DeltaLat:  make([]float64, compared.Gps.Len()),
-		DeltaAcc:  make([]model.Point, compared.Gps.Len()),
-		DeltaGyro: make([]model.Point, compared.Gps.Len()),
+		DeltaAcc:  make([]model.FloatPoint, compared.Gps.Len()),
+		DeltaGyro: make([]model.FloatPoint, compared.Gps.Len()),
 	}
 	for i := 0; i < compared.Gps.Len(); i++ {
 		var minDist float64 = -1
@@ -91,16 +91,14 @@ func difference(perfect interpolation.InterpolatedTrajectory, compared speed.Spe
 		ct.DeltaLat[i] = lat[minIndex] - compared.Gps.Lat[i]
 		ct.DeltaLong[i] = long[minIndex] - compared.Gps.Long[i]
 
-		ct.DeltaAcc[i].X = acc[minIndex].X - comparedAcc.Acc[accIndex].X
-		ct.DeltaAcc[i].Y = acc[minIndex].Y - comparedAcc.Acc[accIndex].Y
-		ct.DeltaAcc[i].Z = acc[minIndex].Z - comparedAcc.Acc[accIndex].Z
+		ct.DeltaAcc[i].X = float64(acc[minIndex].X - comparedAcc.Acc[accIndex].X)
+		ct.DeltaAcc[i].Y = float64(acc[minIndex].Y - comparedAcc.Acc[accIndex].Y)
+		ct.DeltaAcc[i].Z = float64(acc[minIndex].Z - comparedAcc.Acc[accIndex].Z)
 
-		ct.DeltaGyro[i].X = gyro[minIndex].X - comparedAcc.Gyro[accIndex].X
-		ct.DeltaGyro[i].Y = gyro[minIndex].Y - comparedAcc.Gyro[accIndex].Y
-		ct.DeltaGyro[i].Z = gyro[minIndex].Z - comparedAcc.Gyro[accIndex].Z
+		ct.DeltaGyro[i].X = float64(gyro[minIndex].X - comparedAcc.Gyro[accIndex].X)
+		ct.DeltaGyro[i].Y = float64(gyro[minIndex].Y - comparedAcc.Gyro[accIndex].Y)
+		ct.DeltaGyro[i].Z = float64(gyro[minIndex].Z - comparedAcc.Gyro[accIndex].Z)
 	}
-
-	ct.Backlog = math.Normalize(ct.Backlog)
 
 	return
 }
