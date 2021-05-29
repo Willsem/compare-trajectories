@@ -60,10 +60,23 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
       const backlog = compareResult[i].backlog;
       const options = {color: convertBacklogToColor(backlog[0] - backlog[backlog.length - 1])};
       const polyline = convertToPolyline(compareResult[i])
-      comparedTrajectoryElement.push({'option': options, 'positions': polyline});
+      console.log(compareResult[i]);
+      comparedTrajectoryElement.push({'option': options, 'positions': polyline, 'diff': {
+        'backlog': backlog,
+        'dlong': compareResult[i].dlong[0],
+        'dlat': compareResult[i].dlat[0],
+        'dacc': compareResult[i].dacc[0],
+        'dgyro': compareResult[i].dgyro[0],
+      }});
     }
   } else {
-    comparedTrajectoryElement.push({'option': optionsCompared, 'positions': comparedPolyline});
+    comparedTrajectoryElement.push({'option': optionsCompared, 'positions': comparedPolyline, 'diff': {
+        'backlog': '???',
+        'dlong': '???',
+        'dlat': '???',
+        'dacc': '???',
+        'dgyro': '???',
+    }});
   }
 
   return (
@@ -78,7 +91,22 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
           <LayerGroup>
             {comparedTrajectoryElement.map(item =>
               <Polyline pathOptions={item.option} positions={item.positions}>
-                <Tooltip sticky>Test tooltip</Tooltip>
+              // TODO: fix
+                <Tooltip sticky>
+                  <pre>
+                    {'Backlog: ' + item.diff.backlog + '\n' +
+                    'Delta longitude: ' + item.diff.dlong + '\n' +
+                    'Delta latitude: ' + item.diff.dlat + '\n' +
+                    'Delta accelerometer:\n' +
+                    'x: ' + item.diff.dacc.x + '\n' +
+                    'y: ' + item.diff.dacc.y + '\n' +
+                    'z: ' + item.diff.dacc.z + '\n' +
+                    'Delta gyroscope:\n' +
+                    'x: ' + item.diff.dgyro.x + '\n' +
+                    'y: ' + item.diff.dgyro.y + '\n' +
+                    'z: ' + item.diff.dgyro.z}
+                  </pre>
+                </Tooltip>
               </Polyline>
             )}
           </LayerGroup>
