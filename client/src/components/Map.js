@@ -4,7 +4,8 @@ import {
   Polyline,
   LayersControl,
   LayerGroup,
-  Tooltip
+  Tooltip,
+  CircleMarker
 } from 'react-leaflet';
 
 import { filtering } from '../api/filtering'
@@ -25,11 +26,11 @@ function convertToPolyline(trajectory) {
 }
 
 function convertBacklogToColor(backlog) {
-  if (backlog > 0.3) {
+  if (backlog > 0.1) {
     return 'green';
   }
 
-  if (backlog < -0.3) {
+  if (backlog < -0.1) {
     return 'red';
   }
 
@@ -49,7 +50,8 @@ function pointDifference(array) {
 }
 
 const optionsPerfect = {color: 'black'};
-const optionsCompared = {color: 'grey'}
+const optionsCompared = {color: 'grey'};
+const optionsMarker = {color: 'black'};
 
 function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
   if (!perfectTrajectory.filtered) {
@@ -101,23 +103,27 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
         <LayersControl.Overlay checked name="Сравниваемая траектория">
           <LayerGroup>
             {comparedTrajectoryElement.map(item =>
-              <Polyline pathOptions={item.option} positions={item.positions}>
-                <Tooltip sticky>
-                  <pre>
-                    {'Отставание: ' + item.diff.backlog + '\n\n' +
-                    'Разница широты: ' + item.diff.dlong + '\n' +
-                    'Разница долготы: ' + item.diff.dlat + '\n\n' +
-                    'Разница акселерометра:\n' +
-                    'x: ' + item.diff.dacc.x + '\n' +
-                    'y: ' + item.diff.dacc.y + '\n' +
-                    'z: ' + item.diff.dacc.z + '\n\n' +
-                    'Разница гироскопа:\n' +
-                    'x: ' + item.diff.dgyro.x + '\n' +
-                    'y: ' + item.diff.dgyro.y + '\n' +
-                    'z: ' + item.diff.dgyro.z}
-                  </pre>
-                </Tooltip>
-              </Polyline>
+              <div>
+                <Polyline pathOptions={item.option} positions={item.positions}>
+                  <Tooltip sticky>
+                    <pre>
+                      {'Отставание: ' + item.diff.backlog + '\n\n' +
+                      'Разница широты: ' + item.diff.dlong + '\n' +
+                      'Разница долготы: ' + item.diff.dlat + '\n\n' +
+                      'Разница акселерометра:\n' +
+                      'x: ' + item.diff.dacc.x + '\n' +
+                      'y: ' + item.diff.dacc.y + '\n' +
+                      'z: ' + item.diff.dacc.z + '\n\n' +
+                      'Разница гироскопа:\n' +
+                      'x: ' + item.diff.dgyro.x + '\n' +
+                      'y: ' + item.diff.dgyro.y + '\n' +
+                      'z: ' + item.diff.dgyro.z}
+                    </pre>
+                  </Tooltip>
+                </Polyline>
+                <CircleMarker center={item.positions[0]} pathOptions={optionsMarker} radius={1}>
+                </CircleMarker>
+              </div>
             )}
           </LayerGroup>
         </LayersControl.Overlay>
