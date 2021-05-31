@@ -104,17 +104,27 @@ def cut(gps, acc, start, finish):
     min_beg_i = -1
     min_end_i = -1
 
+    found_b = False
+    found_e = False
+
     for i in range(len(acc['date'])):
-        dist_b = abs(convert_date(acc['date'][i]) - begin).microseconds
-        dist_e = abs(convert_date(acc['date'][i]) - end).microseconds
+        dist_b = (abs(convert_date(acc['date'][i]) - begin)).total_seconds()
+        dist_e = (abs(convert_date(acc['date'][i]) - end)).total_seconds()
 
         if min_beg == -1 or dist_b < min_beg:
             min_beg = dist_b
             min_beg_i = i
+        else:
+            found_b = True
 
         if min_end == -1 or dist_e < min_end:
             min_end = dist_e
             min_end_i = i
+        else:
+            found_e = True
+
+        if found_b and found_e:
+            break
 
     acc = {
         'date': acc['date'][min_beg_i:min_end_i],
