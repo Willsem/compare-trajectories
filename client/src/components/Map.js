@@ -5,7 +5,6 @@ import {
   LayersControl,
   LayerGroup,
   Tooltip,
-  CircleMarker
 } from 'react-leaflet';
 
 import { filtering } from '../api/filtering'
@@ -51,7 +50,6 @@ function pointDifference(array) {
 
 const optionsPerfect = {color: 'black'};
 const optionsCompared = {color: 'grey'};
-const optionsMarker = {color: 'black'};
 
 function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
   if (!perfectTrajectory.filtered) {
