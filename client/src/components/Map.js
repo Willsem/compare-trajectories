@@ -121,8 +121,6 @@ function Map({ perfectTrajectory, comparedTrajectory, position, zoom }) {
                     </pre>
                   </Tooltip>
                 </Polyline>
-                <CircleMarker center={item.positions[0]} pathOptions={optionsMarker} radius={1}>
-                </CircleMarker>
               </div>
             )}
           </LayerGroup>
